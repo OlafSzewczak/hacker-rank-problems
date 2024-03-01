@@ -5,6 +5,14 @@ import java.util.*;
 public class StickCutterImpl implements StickCutter {
 
     public List<Integer> getSticksSizesBeforeEachCutIteration(List<Integer> sticks) {
+        if(sticks == null) {
+            throw new NullPointerException("Sticks list cannot be null");
+        }
+
+        if(containNegative(sticks)) {
+            throw new IllegalArgumentException("Invalid input: negative stick lengths not allowed");
+        }
+        sticks = new ArrayList<>(sticks);
         List<Integer> sticksBeforeEachIteration = new ArrayList<>();
         while(!allEqual(sticks)) {
             sticksBeforeEachIteration.add(sticks.size());
@@ -25,6 +33,10 @@ public class StickCutterImpl implements StickCutter {
                 sticksIterator.remove();
             }
         }
+    }
+
+    private boolean containNegative(List<Integer> sticks) {
+        return sticks.stream().anyMatch(stick -> stick < 0);
     }
 
     private boolean allEqual(List<Integer> sticks) {
